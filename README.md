@@ -2,7 +2,7 @@ AS3 Router - Signals
 ====================
 
 This is s fork from **as3-router** to make it use signals instead of events. 
-Check "Robert Penner":http://robertpenner.com/ 's "as3-signals":http://github.com/robertpenner/as3-signals.
+Check [Robert Penner][Robert Penner] 's [as3-signals][as3-signals].
 
 **as3-router** is a simple hash and query string router for ActionScript 3
 that maps route strings to events. This project was inspired by the simplicity
@@ -110,3 +110,4 @@ be dispatched from the router's eventDispatcher.
 [SWFAddress]: http://www.asual.com/swfaddress/ "SWFAddress"
 [RobotLegs]: https://github.com/robotlegs/robotlegs-framework "RobotLegs"
 [as3-signals]: http://github.com/robertpenner/as3-signals "As3-signals"
+[Robert Penner]: http://robertpenner.com/ "Robert Penner"
