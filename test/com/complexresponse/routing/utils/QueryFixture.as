@@ -7,7 +7,7 @@
 // 
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.jeremyruppel.routing.utils
+package com.complexresponse.routing.utils
 {
 	import com.jeremyruppel.routing.utils.parse;
 	import com.jeremyruppel.routing.utils.query;

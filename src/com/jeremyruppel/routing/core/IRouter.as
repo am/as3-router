@@ -7,9 +7,9 @@
 // 
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.jeremyruppel.routing.core
-{
-	import flash.events.IEventDispatcher;
+package com.jeremyruppel.routing.core {
+	import org.osflash.signals.ISignal;
+//	import flash.events.IEventDispatcher;
 
 	/**
 	 * Interface describing the contract for a Router object.
@@ -33,7 +33,7 @@ package com.jeremyruppel.routing.core
 		 * @param route String
 		 * @param eventType String
 		 */
-		function mapRoute( route : String, eventType : String ) : void;
+		function mapRoute( route : String, signal : ISignal ) : void;
 		
 		/**
 		 * maps a pattern to a certain event type
@@ -41,7 +41,7 @@ package com.jeremyruppel.routing.core
 		 * @param pattern RegExp
 		 * @param eventType String
 		 */
-		function mapPattern( pattern : RegExp, eventType : String ) : void;
+		function mapPattern( pattern : RegExp, signal : ISignal ) : void;
 		
 		/**
 		 * maps a series of query string values to a certain event type
@@ -49,7 +49,7 @@ package com.jeremyruppel.routing.core
 		 * @param hash Object
 		 * @param eventType String
 		 */
-		function mapQuery( hash : Object, eventType : String ) : void;
+		function mapQuery( hash : Object, signal : ISignal ) : void;
 		
 		/**
 		 * checks to see if a route has been mapped
@@ -71,10 +71,10 @@ package com.jeremyruppel.routing.core
 		//--------------------------------------
 		
 		/**
-		 * the <code>IEventDispatcher</code> this router uses to dispatch routed events
+		 * the <code>ISignal</code> this router uses to dispatch unrouted signals
 		 */
-		function get eventDispatcher( ) : IEventDispatcher;
-	
+		function get unrouted( ) : ISignal;
+		
 	}
 
 }

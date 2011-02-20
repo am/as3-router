@@ -7,14 +7,14 @@
 // 
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.jeremyruppel.routing.routes
+package com.complexresponse.routing.routes
 {
 	import com.jeremyruppel.routing.core.IRoute;
-	import com.jeremyruppel.routing.routes.HashRoute;
-	import com.jeremyruppel.routing.utils.query;
+	import com.jeremyruppel.routing.routes.RegExpRoute;
+	import com.jeremyruppel.routing.utils.bookend;
+	import com.jeremyruppel.routing.utils.capture;
 	import org.hamcrest.assertThat;
-	import org.hamcrest.collection.hasItems;
-	import org.hamcrest.core.anyOf;
+	import org.hamcrest.collection.array;
 	import org.hamcrest.core.isA;
 	import org.hamcrest.object.equalTo;
 	import org.hamcrest.object.nullValue;
@@ -26,9 +26,9 @@ package com.jeremyruppel.routing.routes
 	 * @playerversion Flash 9.0
 	 * 
 	 * @author Jeremy Ruppel
-	 * @since  28.09.2010
+	 * @since  27.09.2010
 	 */
-	public class HashRouteFixture
+	public class RegExpRouteFixture
 	{
 		//--------------------------------------
 		//  PRIVATE VARIABLES
@@ -43,33 +43,26 @@ package com.jeremyruppel.routing.routes
 		[Before]
 		public function setup( ) : void
 		{
-			var hash : Object = { page : 'home', user : 'jbone', referrer : 'olm' };
+			var match : Array = new RegExp( bookend( capture( '/home/:first/:second/*' ) ) ).exec( '/home/one/two/three' );
 			
-			route = new HashRoute( query( hash ), hash );
+			route = new RegExpRoute( match );
 		}
 		
 		//--------------------------------------
 		//  TEST CASES
 		//--------------------------------------
 	
-		[Test(description="route value returns the query string for the route")]
-		public function test_route_value_returns_the_query_string_for_the_route( ) : void
+		[Test(description="route value returns the first value in its array")]
+		public function test_route_value_returns_the_first_value_in_its_array( ) : void
 		{
-			assertThat( route.value, anyOf(
-				equalTo( '?page=home&user=jbone&referrer=olm' ),
-				equalTo( '?page=home&referrer=olm&user=jbone' ),
-				equalTo( '?user=jbone&page=home&referrer=olm' ),
-				equalTo( '?user=jbone&referrer=olm&page=home' ),
-				equalTo( '?referrer=olm&user=jbone&page=home' ),
-				equalTo( '?referrer=olm&page=home&user=jbone' ) ) );
+			assertThat( route.value, equalTo( '/home/one/two/three' ) );
 		}
 		
 		[Test(description="route params lets you access named routes")]
 		public function test_route_params_lets_you_access_named_routes( ) : void
 		{
-			assertThat( route.params( 'page' ), equalTo( 'home' ) );
-			assertThat( route.params( 'user' ), equalTo( 'jbone' ) );
-			assertThat( route.params( 'referrer' ), equalTo( 'olm' ) );
+			assertThat( route.params( 'first' ), equalTo( 'one' ) );
+			assertThat( route.params( 'second' ), equalTo( 'two' ) );
 		}
 		
 		[Test(description="route params returns null for captures that are not declared")]
@@ -83,7 +76,7 @@ package com.jeremyruppel.routing.routes
 		{
 			assertThat( route.captures, isA( Array ) );
 			
-			assertThat( route.captures, hasItems( 'home', 'jbone', 'olm' ) );
+			assertThat( route.captures, array( 'one', 'two', 'three' ) );
 		}
 		
 		//--------------------------------------
@@ -93,7 +86,7 @@ package com.jeremyruppel.routing.routes
 		/**
 		 * @constructor
 		 */
-		public function HashRouteFixture( )
+		public function RegExpRouteFixture( )
 		{
 		}
 	

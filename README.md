@@ -1,5 +1,8 @@
-AS3 Router
-==========
+AS3 Router - Signals
+====================
+
+This is s fork from **as3-router** to make it use signals instead of events. 
+Check "Robert Penner":http://robertpenner.com/ 's "as3-signals":http://github.com/robertpenner/as3-signals.
 
 **as3-router** is a simple hash and query string router for ActionScript 3
 that maps route strings to events. This project was inspired by the simplicity
@@ -20,31 +23,20 @@ A router can be instantiated stand-alone and can route events through its
 `eventDispatcher` accessor.
 
 	var router : IRouter = new Router( );
+	var signal : ISignal = Signal( );
 	
-	router.mapRoute( '/hello/:name', CustomRouteEvent.HELLO );
+	router.mapRoute( '/hello/:name', signal );
 	
-	router.eventDispatcher.addEventListener( CustomRouteEvent.HELLO, function( event : RouteEvent ) : void
+	signal.add( function( route : IRoute ) : void
 	{
-		event.route.value; // => '/hello/awesome'
+		route.value; // => '/hello/awesome'
 		
-		event.route.params( 'name' ); // => awesome
+		route.params( 'name' ); // => awesome
 	} );
 	
 	// later on...
 	router.route( '/hello/awesome' );
 
-The base `Router` class may optionally accept an `IEventDispatcher` implementation
-to dispatch events from. This makes it trivial to integrate into a RobotLegs
-context, like:
-
-	var router : IRouter = new Router( eventDispatcher );
-	
-	router.mapRoute( '/hello/:name', CustomRouteEvent.HELLO );
-	
-	commandMap.mapEvent( CustomRouteEvent.HELLO, SayHelloToSomeoneCommand );
-	
-	// later on...
-	router.route( '/hello/awesome' );
 
 Route Mappings
 --------------
@@ -56,56 +48,56 @@ that should be familiar to anyone who has experience routing with Sinatra or Bac
 
 `mapRoute` can accept named parameters denoted by a colon. For example:
 
-	router.mapRoute( '/hello/:name', CustomRouteEvent.HELLO );
+	router.mapRoute( '/hello/:name', helloSignal );
 
 will match "/hello/world", "hello/friend", "hello/no-wait-actually-goodbye", etc. The value of 
 a named parameter can be retrieved from the `route` object of the route event dispatched
 when this route is matched, like:
 
-	event.route.params( 'name' ); // => 'no-wait-actually-goodbye'
+	route.params( 'name' ); // => 'no-wait-actually-goodbye'
 
 Multiple parameters can be declared and will each be matched by name:
 
-	router.mapRoute( '/:section/:page', CustomRouteEvent.PAGE );
+	router.mapRoute( '/:section/:page', pageSignal );
 	
 	router.hasRoute( '/company/manifesto' ); // => true
 	
 	// and for the event's route...
-	event.route.params( 'section' ); // => 'company'
-	event.route.params( 'page' ); // => 'manifesto'
+	route.params( 'section' ); // => 'company'
+	route.params( 'page' ); // => 'manifesto'
 
 String routes can also contain splats that will be available as unnamed captures populated in
 the route object's `captures` array:
 
-	router.mapRoute( '/*/profile', CustomRouteEvent.PROFILE );
+	router.mapRoute( '/*/profile', profileSignal );
 	
 	router.hasRoute( '/username/profile' ); // => true
 	
 	router.hasRoute( '/username/contact' ); // => false
 	
-	// and for the event's route...
-	event.route.captures[ 0 ]; // => 'username'
+	// and for the signal's route...
+	route.captures[ 0 ]; // => 'username'
 
 Routes also receive query parameters in their params object. This can be useful for
 tweaking behavior of routes:
 
-	router.mapRoute( '/blog', CustomRouteEvent.BLOG );
+	router.mapRoute( '/blog', blogSignal );
 	
 	router.route( '/blog?page=4' );
 	
-	// and for the event's route...
-	event.route.params( 'page' ); // => '4'
+	// and for the signal's route...
+	route.params( 'page' ); // => '4'
 
 `mapQuery` can match query-string-style routes if you need them. Because query strings are
 unordered key value pairs, they are matched as simple objects, like:
 
-	router.mapQuery( { page : 'home', action : 'whatever' }, CustomRouteEvent.HOME );
+	router.mapQuery( { page : 'home', action : 'whatever' }, homeSignal );
 	
 	router.route( '?action=whatever&page=home' );
 	
-	// and for the event's route...
-	event.route.params( 'action' ); // => 'whatever'
-	event.route.params( 'page' ); // => 'home'
+	// and for the signal's route...
+	route.params( 'action' ); // => 'whatever'
+	route.params( 'page' ); // => 'home'
 
 Unmapped Routes
 ---------------
@@ -117,3 +109,4 @@ be dispatched from the router's eventDispatcher.
 [Backbone]: http://documentcloud.github.com/backbone/ "Backbone.js"
 [SWFAddress]: http://www.asual.com/swfaddress/ "SWFAddress"
 [RobotLegs]: https://github.com/robotlegs/robotlegs-framework "RobotLegs"
+[as3-signals]: http://github.com/robertpenner/as3-signals "As3-signals"

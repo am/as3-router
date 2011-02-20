@@ -7,12 +7,13 @@
 // 
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.jeremyruppel.routing.rules
-{
+package com.jeremyruppel.routing.rules {
 	import com.jeremyruppel.routing.core.IRoute;
 	import com.jeremyruppel.routing.core.IRule;
 	import com.jeremyruppel.routing.routes.RegExpRoute;
 	import com.jeremyruppel.routing.utils.parse;
+
+	import org.osflash.signals.ISignal;
 
 	/**
 	 * A routing rule based on a regular expression pattern.
@@ -32,10 +33,10 @@ package com.jeremyruppel.routing.rules
 		/**
 		 * @constructor
 		 */
-		public function RegExpRule( pattern : RegExp, eventType : String )
+		public function RegExpRule( pattern : RegExp, signal : ISignal )
 		{
 			_pattern = pattern;
-			_eventType = eventType;
+			_signal = signal;
 		}
 	
 		//--------------------------------------
@@ -50,7 +51,7 @@ package com.jeremyruppel.routing.rules
 		/**
 		 * @private
 		 */
-		private var _eventType : String;
+		private var _signal : ISignal;
 		
 		//--------------------------------------
 		//  GETTER/SETTERS
@@ -59,9 +60,9 @@ package com.jeremyruppel.routing.rules
 		/**
 		 * @inheritDoc
 		 */
-		public function get eventType( ) : String
+		public function get signal( ) : ISignal
 		{
-			return _eventType;
+			return _signal;
 		}
 		
 		//--------------------------------------

@@ -1,18 +1,18 @@
-//AS3///////////////////////////////////////////////////////////////////////////
-// 
+// AS3///////////////////////////////////////////////////////////////////////////
+//
 // Copyright (c) 2011 the original author or authors
 //
 // Permission is hereby granted to use, modify, and distribute this file
 // in accordance with the terms of the license agreement accompanying it.
-// 
-////////////////////////////////////////////////////////////////////////////////
-
-package com.jeremyruppel.routing.rules
-{
+//
+// //////////////////////////////////////////////////////////////////////////////
+package com.jeremyruppel.routing.rules {
 	import com.jeremyruppel.routing.core.IRoute;
 	import com.jeremyruppel.routing.core.IRule;
 	import com.jeremyruppel.routing.routes.HashRoute;
 	import com.jeremyruppel.routing.utils.parse;
+
+	import org.osflash.signals.ISignal;
 
 	/**
 	 * A routing rule based on a series of query-string parameters.
@@ -23,91 +23,75 @@ package com.jeremyruppel.routing.rules
 	 * @author Jeremy Ruppel
 	 * @since  10.09.2010
 	 */
-	public class HashRule implements IRule
-	{
-		//--------------------------------------
-		//  CONSTRUCTOR
-		//--------------------------------------
-	
+	public class HashRule implements IRule {
+		// --------------------------------------
+		// CONSTRUCTOR
+		// --------------------------------------
 		/**
 		 * @constructor
 		 */
-		public function HashRule( hash : Object, eventType : String )
-		{
+		public function HashRule(hash : Object, signal : ISignal) {
 			_hash = hash;
-			_eventType = eventType;
+			_signal = signal;
 		}
-	
-		//--------------------------------------
-		//  PRIVATE VARIABLES
-		//--------------------------------------
-	
+
+		// --------------------------------------
+		// PRIVATE VARIABLES
+		// --------------------------------------
 		/**
 		 * @private
 		 */
 		private var _hash : Object;
-		
 		/**
 		 * @private
 		 */
-		private var _eventType : String;
-		
-		//--------------------------------------
-		//  GETTER/SETTERS
-		//--------------------------------------
-	
+		private var _signal : ISignal;
+
+		// --------------------------------------
+		// GETTER/SETTERS
+		// --------------------------------------
 		/**
 		 * @inheritDoc
 		 */
-		public function get eventType( ) : String
-		{
-			return _eventType;
+		public function get signal() : ISignal {
+			return _signal;
 		}
-		
-		//--------------------------------------
-		//  PUBLIC METHODS
-		//--------------------------------------
-	
+
+		// --------------------------------------
+		// PUBLIC METHODS
+		// --------------------------------------
 		/**
 		 * @inheritDoc
 		 * @param route String
 		 * @return Boolean 
 		 */
-		public function matches( route : String ) : Boolean
-		{
-			var query : Object = parse( route );
-			
-			for( var key : String in _hash )
-			{
-				if( !query[ key ] )
-				{
+		public function matches(route : String) : Boolean {
+			var query : Object = parse(route);
+
+			for ( var key : String in _hash ) {
+				if ( !query[ key ] ) {
 					return false;
 				}
-				
-				if( _hash[ key ] is String && _hash[ key ] != query[ key ] )
-				{
+
+				if ( _hash[ key ] is String && _hash[ key ] != query[ key ] ) {
 					return false;
 				}
-				
-				if( _hash[ key ] is RegExp && _hash[ key ].test( query[ key ] ) == false )
-				{
+
+				if ( _hash[ key ] is RegExp && _hash[ key ].test(query[ key ]) == false ) {
 					return false;
 				}
 			}
-			
+
 			return true;
 		}
-		
+
 		/**
 		 * @inheritDoc
 		 * @param route String
 		 * @return IRoute
 		 */
-		public function execute( route : String ) : IRoute
-		{
-			return new HashRoute( route, parse( route ) );
+		public function execute(route : String) : IRoute {
+			return new HashRoute(route, parse(route));
 		}
-	
 	}
-
 }

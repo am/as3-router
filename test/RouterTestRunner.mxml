@@ -10,14 +10,14 @@
 	
 	<mx:Script>
 	    <![CDATA[
-		
-		import mx.events.FlexEvent;
+			import com.complexresponse.routing.RouterTestSuite;
 
-		import org.flexunit.flexui.TestRunnerBase;
-		import org.flexunit.listeners.UIListener;
-		import org.flexunit.runner.FlexUnitCore
+			import org.flexunit.listeners.UIListener;
+			import org.flexunit.runner.FlexUnitCore;
+
+			import mx.events.FlexEvent;
+
 		
-		import com.jeremyruppel.routing.RouterTestSuite;
 		
 		/**
 		 *	Test suite for the model project.

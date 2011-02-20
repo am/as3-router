@@ -9,7 +9,7 @@
 
 package com.jeremyruppel.routing.core
 {
-
+	import org.osflash.signals.ISignal;
 	/**
 	 * Interface describing the contract for a routing Rule object.
 	 * 
@@ -47,7 +47,7 @@ package com.jeremyruppel.routing.core
 		/**
 		 * the event type associated with this rule
 		 */
-		function get eventType( ) : String;
+		function get signal( ) : ISignal;
 	
 	}
 
